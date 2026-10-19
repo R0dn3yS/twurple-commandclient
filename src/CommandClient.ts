@@ -3,7 +3,7 @@ import { ApiClient } from '@twurple/api';
 import { CommandsManager } from './CommandsManager.ts';
 import { parseCommand } from './Command.ts';
 import { EventEmitter } from 'node:events';
-import type { CommandContext } from './CommandContext.ts';
+import { Channel, type CommandContext } from './CommandContext.ts';
 
 export interface CommandClientOptions extends ChatClientOptions {
   prefix: string;
@@ -46,8 +46,10 @@ export class CommandClient extends ChatClient {
       argString: parsed.argString,
       message: msg,
       author: msg.userInfo,
-      channel: channel,
-      command
+      channel: new Channel(this, channel),
+      command,
+
+      reply: (message: string) => this.say(channel, message, { replyTo: msg })
     }
 
     if (command.modOnly && !msg.userInfo.isMod) {
@@ -68,7 +70,7 @@ export class CommandClient extends ChatClient {
     }
   }
 
-  reply(ctx: CommandContext, message: string) {
-    this.say(ctx.channel, `@${ctx.author.displayName} ${message}`);
-  }
+  // reply(ctx: CommandContext, message: string) {
+  //   this.say(ctx.channel, `@${ctx.author.displayName} ${message}`);
+  // }
 }

@@ -6,10 +6,25 @@ export interface CommandContext {
   client: CommandClient;
   message: ChatMessage;
   author: ChatUser;
-  channel: string;
+  channel: Channel;
   prefix: string;
   command: Command;
   name: string;
   args: string[];
   argString: string;
+  reply(message: string): Promise<void>;
+}
+
+export class Channel {
+  public client: CommandClient;
+  public id: string;
+
+  constructor(client: CommandClient, id: string) {
+    this.client = client;
+    this.id = id;
+  }
+
+  say(message: string) {
+    this.client.say(this.id, message);
+  }
 }
