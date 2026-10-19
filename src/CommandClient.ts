@@ -12,7 +12,7 @@ export interface CommandClientOptions extends ChatClientOptions {
 export class CommandClient extends ChatClient {
   public commands: CommandsManager = new CommandsManager(this);
   public events: EventEmitter = new EventEmitter();
-  private prefix: string;
+  public prefix: string;
   public apiClient: ApiClient;
 
   constructor(options: CommandClientOptions) {
